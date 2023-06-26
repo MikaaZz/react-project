@@ -1,6 +1,8 @@
 import './App.css';
+import List from './components/List';
+import Search from './components/Search';
 
-const list = [
+const stories = [
   {
     title: 'React',
     url: 'https://reactjs.org/',
@@ -19,31 +21,13 @@ const list = [
   },
 ];
 
-function App() {
-
-  return (
-    <div>
-      <h1>My Hacker Stories</h1>
-
-      <label htmlFor="search">Search: </label>
-      <input id="search" type="text" />
-
-      <hr />
-
-      {list.map(function (item) {
-        return (
-          <div key={item.objectID}>
-            <span>
-              <a href={item.url}>{item.title}</a>
-            </span>
-            <span>{item.author}</span>
-            <span>{item.num_comments}</span>
-            <span>{item.points}</span>
-          </div>
-        );
-      })}
-    </div>
-  );
-}
+const App = () => {
+  <div>
+    <h1>My Hacker Stories</h1>
+    <Search />
+    <hr />
+    <List list={stories} />
+  </div>;
+};
 
 export default App;
