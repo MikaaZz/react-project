@@ -1,5 +1,5 @@
-const List = ({ list }) => {
-  list.map((item) => (
+const List = (props) =>
+  props.list.map((item) => (
     <div key={item.objectID}>
       <span>
         <a href={item.url}>{item.title}</a>
@@ -9,5 +9,5 @@ const List = ({ list }) => {
       <span>{item.points}</span>
     </div>
   ));
-};
+
 export default List;

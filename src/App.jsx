@@ -22,12 +22,17 @@ const stories = [
 ];
 
 const App = () => {
-  <div>
-    <h1>My Hacker Stories</h1>
-    <Search />
-    <hr />
-    <List list={stories} />
-  </div>;
+  const handleSearch = (event) => {
+    console.log(event.target.value);
+  };
+  return (
+    <div>
+      <h1>My Hacker Stories</h1>
+      <Search onSearch={handleSearch} />
+      <hr />
+      <List list={stories} />
+    </div>
+  );
 };
 
 export default App;
