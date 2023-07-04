@@ -20,7 +20,6 @@ const InputWithLabel = ({
       &nbsp;
       <input
         ref={inputRef}
-
         id={id}
         type={type}
         value={value}
