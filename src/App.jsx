@@ -1,7 +1,7 @@
-import React from 'react';
 import List from './components/List';
-import Search from './components/Search';
+import InputWithLabel from './components/InputWithLabel';
 import './App.css';
+import useSemiPersistentState from './hooks/useSemiPersistentState';
 
 const stories = [
   {
@@ -23,11 +23,7 @@ const stories = [
 ];
 
 const App = () => {
-  const [searchTerm, setSearchTerm] = React.useState(localStorage.getItem('search') || 'React');
-
-  React.useEffect(() => {
-    localStorage.setItem('search', searchTerm);
-  }, [searchTerm]);
+  const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
@@ -41,7 +37,14 @@ const App = () => {
   return (
     <div>
       <h1>My Hacker Stories</h1>
-      <Search search={searchTerm} onSearch={handleSearch} />
+      <InputWithLabel
+        id="search"
+        value={searchTerm}
+        isFocused
+        onInputChange={handleSearch}
+      >
+        <strong>Search:</strong>
+      </InputWithLabel>
       <hr />
       <List list={searchedStories} />
     </div>
