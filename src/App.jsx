@@ -1,10 +1,10 @@
 import React from 'react';
 import axios from 'axios';
 
-import List from './components/List';
 import useSemiPersistentState from './hooks/useSemiPersistentState';
-import './App.css';
 import SearchForm from './components/SearchForm';
+import styles from './App.module.css';
+import List  from './components/List';
 
 const API_ENDPOINT = 'https://hn.algolia.com/api/v1/search?query=';
 
@@ -33,6 +33,13 @@ const storiesReducer = (state, action) => {
   }
 };
 
+const getSumComments = stories => {
+  return stories.data.reduce(
+    (result, value) => result + value.num_comments,
+    0
+  );
+};
+
 const App = () => {
   const [searchTerm, setSearchTerm] = useSemiPersistentState('search', 'React');
   const [url, setUrl] = React.useState(`${API_ENDPOINT}${searchTerm}`);
@@ -41,6 +48,8 @@ const App = () => {
     isLoading: false,
     isError: false,
   });
+
+  const sumComments = getSumComments(stories);
 
   const handleFetchStories = React.useCallback(async () => {
     dispatchStories({ type: 'STORIES_FETCH_INIT' });
@@ -58,9 +67,9 @@ const App = () => {
     // And this function inside the Array, is to run this function only once, when the component mounts.
   }, [handleFetchStories]);
 
-  const handleRemoveStory = (item) => {
+  const handleRemoveStory = React.useCallback(item => {
     dispatchStories({ type: 'REMOVE_STORY', payload: item });
-  };
+  },[]);
 
   const handleSearchInput = (event) => {
     setSearchTerm(event.target.value);
@@ -72,8 +81,8 @@ const App = () => {
   };
 
   return (
-    <div>
-      <h1>My Hacker Stories</h1>
+    <div className={styles.container}>
+      <h1 className={styles.headlinePrimary}>My Hacker Stories with {sumComments} comments.</h1>
 
       <SearchForm
         searchTerm={searchTerm}
@@ -81,8 +90,8 @@ const App = () => {
         onSearchSubmit={handleSearchSubmit}
       />
 
-      <hr />
       {stories.isError && <p>Something went wrong ...</p>}
+
       {stories.isLoading ? (
         <p>Loading ...</p>
       ) : (

@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import React from 'react';
+import styles from '../../App.module.css';
 const InputWithLabel = ({
   id,
   value,
@@ -16,7 +17,7 @@ const InputWithLabel = ({
   }, [isFocused]);
   return (
     <>
-      <label htmlFor={id}>{children}</label>
+      <label htmlFor={id} className={styles.label}>{children}</label>
       &nbsp;
       <input
         ref={inputRef}
@@ -24,6 +25,7 @@ const InputWithLabel = ({
         type={type}
         value={value}
         onChange={onInputChange}
+        className={styles.input}
       />
     </>
   );
