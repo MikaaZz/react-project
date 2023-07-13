@@ -12,39 +12,45 @@ const SORTS = {
 };
 
 const List = ({ list, onRemoveItem }) => {
-  const [sort, setSort] = React.useState('NONE');
+  const [sort, setSort] = React.useState({
+    sortKey: 'NONE',
+    isReverse: false,
+  });
 
-  const handleSort = (sortKey) => {
-    setSort(sortKey);
+  const handleSort = sortKey => {
+    const isReverse = sort.sortKey === sortKey && !sort.isReverse;
+    setSort({ sortKey, isReverse });
   };
 
-  const sortFunction = SORTS[sort];
-  const sortedList = sortFunction(list);
+  const sortFunction = SORTS[sort.sortKey];
+  const sortedList = sort.isReverse
+    ? sortFunction(list).reverse()
+    : sortFunction(list);
 
   return (
     <div>
-      <div style={{ display: 'flex', width:'100%' }}>
-        <span>
-          <button type="button" onClick={() => handleSort('TITLE')}>
+      <div style={{ display: 'flex', width:'100%', margin:'1rem 0', gap: '1rem', flexWrap:'wrap' }}>
+        <span style={{width:'100%', maxWidth:'150px'}}>
+          <button style={{width:'100%', maxWidth:'150px', padding: '.5rem 0'}} type="button" onClick={() => handleSort('TITLE')}>
             Title
           </button>
         </span>
-        <span>
-          <button type="button" onClick={() => handleSort('AUTHOR')}>
+        <span style={{width:'100%', maxWidth:'150px'}}>
+          <button style={{width:'100%', maxWidth:'150px', padding: '.5rem 0'}} type="button" onClick={() => handleSort('AUTHOR')}>
             Author
           </button>
         </span>
-        <span>
-          <button type="button" onClick={() => handleSort('COMMENT')}>
+        <span style={{width:'100%', maxWidth:'150px'}}>
+          <button style={{width:'100%', maxWidth:'150px', padding: '.5rem 0'}} type="button" onClick={() => handleSort('COMMENT')}>
             Comments
           </button>
         </span>
-        <span>
-          <button type="button" onClick={() => handleSort('POINT')}>
+        <span style={{width:'100%', maxWidth:'150px'}}>
+          <button style={{width:'100%', maxWidth:'150px', padding: '.5rem 0'}} type="button" onClick={() => handleSort('POINT')}>
             Points
           </button>
         </span>
-        <span>Actions</span>
+        <span style={{width:'100%', maxWidth:'150px'}}>Actions</span>
       </div>
       {sortedList.map(({ ...item }) => {
         return (
@@ -68,7 +74,7 @@ export const Item = ({
   return (
     <div className={styles.item}>
       <span style={{ width: '40%' }}>
-        <a href={url}>{title}</a>
+        <a href={url} target='_blank' rel="noreferrer">{title}</a>
       </span>
       <span style={{ width: '30%' }}>{author}</span>
       <span style={{ width: '10%' }}>{num_comments}</span>
